@@ -57,6 +57,30 @@ def bellman_ford_shortest_path_test():
     Graphs.bellman_ford_shortest_path(graph, 0, p, d)
     assert p[0] == -1 and p[1] == 0 and p[2] == 0 and p[3] == 0 and p[4] == 2 and p[5] == 1, "Incorrect solution"
 
+def bellman_ford_negative_cycle_test():
+    graph = []
+    graph.append([(0, 1, 5)])
+    graph.append([(1, 2, 10)])
+    graph.append([(2, 3, -20)])
+    graph.append([(3, 0, 2)])
+    path = []
+    res = Graphs.bellman_ford_negative_cycle(graph, 0, path)
+    assert res and path.index(0) != -1 and path.index(1) != -1 and path.index(2) != -1 and path.index(3) != -1, "Incorrect solution" 
+
+def floyd_warshall_test():
+    d = [
+            [inf, 10, 5, 7, inf, inf],
+            [inf, inf, inf, inf, 10,  1],
+            [inf, inf, inf, inf, 3,  inf],
+            [inf, inf, inf, inf, inf, 1],
+            [inf, inf, inf, inf, inf, inf],
+            [inf, inf, inf, inf, inf, inf]
+        ]
+    Graphs.floyd_warshall_algorithm(d)
+    assert d[0][1] == 10 and d[0][2] == 5 and d[0][3] == 7 and d[0][4] == 8 and d[0][5] == 8, "Incorrect solution"
+
+def kruskals_minimum_spanning_tree_test():
+    pass
 
 def main():
     bfs_test()
@@ -64,6 +88,8 @@ def main():
     dfs_test()
     djikstra_sparse_test()
     bellman_ford_shortest_path_test()
+    bellman_ford_negative_cycle_test()
+    floyd_warshall_test()
 
 if __name__ == '__main__':
     main()

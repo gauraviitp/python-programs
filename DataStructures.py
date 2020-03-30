@@ -124,4 +124,3 @@ class FenwickTree2DMin(FenwickTree2D):
     
     def get_init_val(self):
         return inf
-

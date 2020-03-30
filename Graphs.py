@@ -1,6 +1,7 @@
 from sys import stdin as istream
 from sys import stdout as ostream
 from collections import deque
+from DataStructures import DisjointSet
 from math import inf
 import heapq
 
@@ -106,14 +107,67 @@ def bellman_ford_negative_cycle(adj: 'list of edges', s: int, path: list):
         cur = y
         while True:
             path.append(cur)
-            if cur == y and len(path) > 0:
+            if cur == y and len(path) > 1:
                 break
             cur = p[cur]
         path.reverse()
-
-
-
-
         return True
     else:
         return False
+
+def floyd_warshall_algorithm(d: 'list of list'):
+    n = len(d)
+    for k in range(n):
+        for i in range(n):
+            for j in range(n):
+                d[i][j] = min(d[i][j], d[i][k] + d[k][j])
+
+def kruskals_minimum_spanning_tree(adj: 'list of edges'):
+    edges = []
+    for i in range(len(adj)):
+        for edge in adj[i]:
+            edges.append((edge[2], edge[0], edge[1]))
+    edges.sort()
+    ds = DisjointSet(len(adj))
+    cost  = 0
+    result = []
+    for edge in edges:
+        if ds.find(edge[1]) != ds.find(edge[2]):
+            cost += edge[0]
+            result.append(edge)
+            ds.union(edge[1], edge[2])
+
+def dfs_find_cycle(adj: 'list of list', s: int, p: list, color: list, cycle: list):
+    color[s] = 1
+    for v in adj[s]:
+        if color[v] == 0:
+            p[v] = s
+            if dfs_find_cycle(adj, v, p, color, cycle):
+                return True
+        elif color[v] == 1:
+            cycle[0] = v # cycle start
+            cycle[1] = s # cycle end
+            return True
+    color[s] = 2
+    return False
+
+def find_cycle(adj: 'list of list', cycle: list):
+    n = len(adj)
+    color = [0] * n
+    p = [0] * n
+    cycle_endpoints = [-1, -1]
+
+    for v in range(n):
+        if color[v] == 0 and dfs_find_cycle(adj, v, p, color, cycle_endpoints): # found a cycle
+            break
+    cycle_start, cycle_end = cycle_endpoints[0], cycle_endpoints[1]
+    cycle.append(cycle_start)
+    v = cycle_end
+    while v != cycle_start:
+        cycle.append(v)
+        v = p[v]
+    cycle.append(cycle_start)
+    cycle.reverse()
+
+
+
