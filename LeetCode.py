@@ -88,6 +88,19 @@ def maxChunksToSorted_I(arr: list):
 
 
 """
-    1157 - Online Majority Element In Subarray
+    416 - Partition Equal Subset Sum
+"""
+
+def partition_equal_subset_sum(nums: list): 
+    sum_val = 0
+    bit_set = 1
+    for num in nums:
+        sum_val += num
+        bit_set |= bit_set << num
+    return sum_val & 1 == 0 and (bit_set >> (sum_val // 2) & 1)
+
+
+"""
+    
 """
 

@@ -181,14 +181,47 @@ def solve_alphabet_cake():
             o.write('\n')
 
 """
-    Ratatouille
-    Round 1A - 2017
+    QR - 2019
 """
 
-def solve_ratatouille():
-    pass
+def solve_latin_square():
+    t = int(f.readline())
+    for test_no in range(1, t + 1):
+        n = int(f.readline())
+        m = []
+        for _ in range(n):
+            m.append(list(map(int, f.readline().split())))
+        # trace
+        trace = 0
+        for i in range(n):
+            trace += m[i][i]
+        # duplicate rows
+        r = 0
+        for i in range(n):
+            okay = True
+            seen = [False] * (n + 1)
+            for j in range(n):
+                if seen[m[i][j]]:
+                    okay = False
+                    break
+                seen[m[i][j]] = True
+            if not okay:
+                r += 1
+        # duplicate columns
+        c = 0
+        for j in range(n):
+            okay = True
+            seen = [False] * (n + 1)
+            for i in range(n):
+                if seen[m[i][j]]:
+                    okay = False
+                    break
+                seen[m[i][j]] = True
+            if not okay:
+                c += 1
+        o.write(f"Case #{test_no}: {trace} {r} {c}\n")
 
 if __name__ == '__main__':
-    solve_alphabet_cake()
+    solve_latin_square()
     # Flush the output
     o.flush()
