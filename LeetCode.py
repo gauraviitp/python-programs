@@ -132,3 +132,23 @@ def minCost(self, grid: 'List[List[int]]') -> int:
                 else: q.append(node)
         return dist
 
+"""
+1354. Construct Target Array With Multiple Sums
+"""
+def isPossibleToConstructTargetArray(self, target: 'List[int]'):
+        total = sum(target)
+        for i in range(len(target)): target[i] = -target[i]
+        import heapq
+        heapq.heapify(target)
+        while True:
+            hi = -heapq.heappop(target)
+            rest = total - hi
+            #print(hi, rest, total)
+            if hi == 1 or rest == 1: return True
+            if rest >= hi or rest == 0: return False
+            hi = hi % rest
+            if hi == 0: return False
+            total = rest + hi
+            heapq.heappush(target, -hi)
+        return False
+
