@@ -68,5 +68,18 @@ def nth_fibonacci(n):
     else:
         return [c, d]
 
+
+def factorization_trial_division(n):
+    factors = {}
+    d = 2
+    while d * d <= n:
+        while n%d == 0:
+            n//=d
+            if d in factors: factors[d] += 1
+            else: factors[d]=1
+        d+=1
+    if n>1: factors[n]=1
+    return factors
+
 if __name__ == '__main__':
     pass
