@@ -8,6 +8,7 @@ from LeetCode import MaxVowels
 from LeetCode import LongestOnes
 from LeetCode import AllPathsSourceTarget
 from LeetCode import AlienDictionary
+from LeetCode import PalindromePartioningII
 
 
 def isPossibleDivide_test():
@@ -90,7 +91,13 @@ def alienDictionary():
     assert sol.solve(["caa", "aaa", "aab"]) == ['c', 'a', 'b']
 
 
+def palindromePartioningII():
+    sol = PalindromePartioningII()
+    assert sol.minCut('abbab') == 1
+
+
 def main():
+    palindromePartioningII()
     alienDictionary()
     allPathsSourceTarget()
     longestOnes()

@@ -411,3 +411,22 @@ class AlienDictionary:
             if j < len(a) and j < len(b):
                 g.add(a[j], b[j])
         return g.topological_sort()
+
+
+class PalindromePartioningII:
+    def minCut(self, s: str) -> int:
+        n = len(s)
+        cut = [i-1 for i in range(n+1)]
+        # print(cut)
+        for i in range(n):
+            j = 0
+            while i-j >= 0 and i+j < n and s[i-j] == s[i+j]:
+                cut[i+j+1] = min(cut[i+j+1], cut[i-j]+1)
+                j += 1
+            j = 0
+            k = i+1
+            while i-j >= 0 and k+j < n and s[i-j] == s[k+j]:
+                cut[k+j+1] = min(cut[k+j+1], cut[i-j]+1)
+                j += 1
+        # print(cut)
+        return cut[-1]
