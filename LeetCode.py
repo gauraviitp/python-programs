@@ -1,5 +1,7 @@
+import math
 from collections import Counter
 from collections import deque
+from collections import defaultdict
 import heapq
 
 from Algebra import factorization_trial_division
@@ -430,3 +432,135 @@ class PalindromePartioningII:
                 j += 1
         # print(cut)
         return cut[-1]
+
+
+class RepeatedSubstrings:
+    def findRepeatedDnaSequences(self, s: str):
+        hashes = defaultdict(int)
+        hash_sub = 0
+        m, p = int(1e9+9), 31
+        p_pow = (p**9) % m
+        for c in range(10):
+            hash_sub = hash_sub * p + (ord(s[c]) - ord('A') + 1)
+            hash_sub = hash_sub % m
+        hashes[hash_sub] += 1
+        res = []
+        for i in range(10, len(s)):
+            hash_sub = (hash_sub - (ord(s[i-10]) - ord('A') + 1) * p_pow) % m
+            hash_sub = (hash_sub * p + ord(s[i]) - ord('A') + 1) % m
+            if hashes[hash_sub] == 1:
+                res.append(s[i-9:i+1])
+            hashes[hash_sub] += 1
+        return res
+
+
+class FindRightInterval:
+
+    def search(self, intervals, k):
+
+        lo, hi = 0, len(intervals)-1
+        while lo < hi:
+            mid = (lo+hi)//2
+            if intervals[mid][0] < k:  # mid is less than k; k must be to the right
+                lo = mid+1
+            else:  # k is atleast mid
+                hi = mid
+
+        return intervals[lo][2] if lo >= 0 and intervals[lo][0] >= k else -1
+
+    def findRightInterval(self, intervals):
+
+        for i, interval in enumerate(intervals):
+            interval.append(i)
+
+        intervals.sort()
+
+        res = [-1]*len(intervals)
+        for i, interval in enumerate(intervals):
+            res[interval[2]] = self.search(intervals, interval[1])
+
+        return res
+
+
+class MinimumWindowSubstring:
+    def minWindow(self, s: str, t: str) -> str:
+
+        start = end = 0
+
+        head = 0
+        d = math.inf  # length of min string
+
+        # cnt is number of characters in the window [start, end]
+        # that are in t as well
+        # cnt never goes below 0
+
+        cnt = len(t)
+        cntT = Counter(t)
+
+        while end < len(s):
+
+            # process end
+            if s[end] in cntT:
+                # you have seen a char that is also in t
+                if cntT[s[end]] > 0:
+                    cnt -= 1
+                cntT[s[end]] -= 1
+
+            end += 1
+
+            print(start, end, cnt, cntT, d, head)
+
+            # process start
+            while cnt == 0:
+                if end - start < d:
+                    head = start
+                    d = end - start
+
+                # if char at start is in t
+                # and its count is zero
+                if s[start] in cntT:
+                    # you have seen a char
+                    # which is in t
+                    # and which will need to be seen again
+                    if cntT[s[start]] == 0:
+                        cnt += 1
+                    cntT[s[start]] += 1
+
+                start += 1
+
+        if d == math.inf:
+            return ""
+        else:
+            return s[head:head + d]
+
+
+class FindAnagrams:
+    def findAnagrams(self, s: str, p: str):
+        P = Counter(p)
+
+        res = []
+
+        start = end = 0
+
+        counter = len(p)
+
+        while end < len(s):
+            # process end
+
+            if P[s[end]] > 0:
+                counter -= 1
+            P[s[end]] -= 1
+
+            end += 1
+
+            while counter == 0:
+                res.append(start)
+
+                if P[s[start]] == 0:
+                    counter += 1
+
+                P[s[start]] += 1
+
+                start += 1
+
+        return res

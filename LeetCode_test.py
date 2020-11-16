@@ -1,14 +1,4 @@
-from LeetCode import isPossibleDivide
-from LeetCode import MedianFinder
-from LeetCode import maxChunksToSorted
-from LeetCode import MinRefuelStops
-from LeetCode import LargestDivisibleSubset
-from LeetCode import MinSumOfLengths
-from LeetCode import MaxVowels
-from LeetCode import LongestOnes
-from LeetCode import AllPathsSourceTarget
-from LeetCode import AlienDictionary
-from LeetCode import PalindromePartioningII
+from LeetCode import *
 
 
 def isPossibleDivide_test():
@@ -96,7 +86,32 @@ def palindromePartioningII():
     assert sol.minCut('abbab') == 1
 
 
+def repeatedSubstrings():
+    sol = RepeatedSubstrings()
+    assert sol.findRepeatedDnaSequences("AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT") == [
+        "AAAAACCCCC", "CCCCCAAAAA"]
+
+
+def findRightInterval():
+    sol = FindRightInterval()
+    assert sol.findRightInterval([[3, 4], [2, 3], [1, 2]]) == [-1, 0, 1]
+
+
+def minWindowSubstr():
+    sol = MinimumWindowSubstring()
+    assert sol.minWindow("ADOBECODEBANC", "ABC") == "BANC"
+
+
+def findAnagrams():
+    sol = FindAnagrams()
+    assert sol.findAnagrams("cbaebabacd", "abc") == [0, 6]
+
+
 def main():
+    findAnagrams()
+    minWindowSubstr()
+    findRightInterval()
+    repeatedSubstrings()
     palindromePartioningII()
     alienDictionary()
     allPathsSourceTarget()
