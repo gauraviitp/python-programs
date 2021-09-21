@@ -1,26 +1,70 @@
 from math import inf
 import operator
 
+from collections import defaultdict
+
+
 class DisjointSet:
     def __init__(self, n):
-        self.parent = [i for i in range(n)]
+
+        self.parent = [-1] * n
         self.size = [1] * n
 
     def find(self, x):
-        if self.parent[x] == x:
+
+        p = self.parent[x]
+
+        if p == -1:
             return x
-        self.parent[x] = self.find(x)
+
+        self.parent[x] = self.find(p)
         return self.parent[x]
-        
+
     def union(self, a, b):
+
         a = self.find(a)
         b = self.find(b)
+
         if a != b:
             # attach tree of lower rank to the tree of higher rank
             if self.size[a] < self.size[b]:
                 a, b = b, a
+
+            # size of a is larger than size of b after above step
+            # attach b to a
             self.parent[b] = a
             self.size[a] += self.size[b]
+
+
+class Solution:
+    def smallestStringWithSwaps(self, s: str, pairs) -> str:
+
+        n = len(s)
+
+        res = list(s)
+
+        dset = DisjointSet(n)
+
+        for a, b in pairs:
+
+            dset.union(a, b)
+
+        d = defaultdict(list)
+
+        for i in range(n):
+
+            d[dset.find(i)].append(i)
+
+        for key in d:
+            d[key].sort()
+
+            values = sorted([s[i] for i in d[key]])
+
+            for i, index in enumerate(d[key]):
+                res[index] = values[i]
+
+        return ''.join(res)
+
 
 class FenwickTree:
     def __init__(self, n: int, op):
@@ -64,9 +108,10 @@ class FenwickTree:
 class FenwickTreeMin(FenwickTree):
     def get_op(self):
         return min
-    
+
     def get_init_val(self):
         return inf
+
 
 class FenwickTree2D:
     def __init__(self, nx: int, ny: int):
@@ -80,7 +125,8 @@ class FenwickTree2D:
     def from_list(cls, a):
         nx = len(a)
         ny = 0
-        if nx > 0: ny = len(a[0])
+        if nx > 0:
+            ny = len(a[0])
         obj = cls(nx, ny)
         for i in range(nx):
             for j in range(ny):
@@ -118,9 +164,10 @@ class FenwickTree2D:
             raise Exception('min is not reversible')
         return self.get(x2, y2) - self.get(x1 - 1, y1 - 1)
 
+
 class FenwickTree2DMin(FenwickTree2D):
     def get_op(self):
         return min
-    
+
     def get_init_val(self):
         return inf
