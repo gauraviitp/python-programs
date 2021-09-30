@@ -22,13 +22,9 @@ class Solution:
             cur = cur.next
             k -= 1
 
-        if not cur.next:
-            return dummy.next
-
+        tail.next = dummy.next
         head = cur.next
         cur.next = None
-
-        tail.next = dummy.next
 
         return head
 
