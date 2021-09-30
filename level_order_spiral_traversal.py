@@ -1,40 +1,45 @@
+from collections import deque
+
 # Function to return a list containing the level order traversal in spiral form.
+
+
 def findSpiral(root):
     # Code here
 
     if not root:
         return []
 
-    q = []
-    s = [root]
+    q = deque([root])
 
     level = 1
 
     res = []
 
-    while q or s:
+    while q:
 
-        if level & 1 == 1:
-            while s:
-                node = s.pop()
+        n = len(q)
+
+        for _ in range(n):
+
+            if level & 1 == 1:
+                node = q.pop()
                 res.append(node.data)
 
                 if node.right:
-                    q.append(node.right)
+                    q.appendleft(node.right)
+
+                if node.left:
+                    q.appendleft(node.left)
+
+            else:
+                node = q.popleft()
+                res.append(node.data)
 
                 if node.left:
                     q.append(node.left)
 
-        else:
-            while q:
-                node = q.pop()
-                res.append(node.data)
-
-                if node.left:
-                    s.append(node.left)
-
                 if node.right:
-                    s.append(node.right)
+                    q.append(node.right)
 
         level += 1
 
