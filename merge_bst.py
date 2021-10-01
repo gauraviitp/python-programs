@@ -16,51 +16,40 @@ class Solution:
         # code here.
 
         def inorder(node):
-            nonlocal pre
-            nonlocal head
 
             if not node:
                 return
 
-            if node.left:
-                inorder(node.left)
+            yield from inorder(node.left)
 
-            if not head:
-                head = node
+            yield node.data
 
-            if pre:
-                pre.right = node
-                node.left = pre
+            yield from inorder(node.right)
 
-            pre = node
+        head1 = inorder(root1)
+        head2 = inorder(root2)
 
-            if node.right:
-                inorder(node.right)
-
-        pre = head = None
-        inorder(root1)
-        head1 = head
-
-        pre = head = None
-        inorder(root2)
-        head2 = head
+        cur1 = next(head1, None)
+        cur2 = next(head2, None)
 
         res = []
-        while head1 or head2:
-            if head1 and head2:
-                if head1.data <= head2.data:
-                    res.append(head1.data)
-                    head1 = head1.right
+
+        while cur1 or cur2:
+
+            if cur1 and cur2:
+                if cur1 <= cur2:
+                    res.append(cur1)
+                    cur1 = next(head1, None)
                 else:
-                    res.append(head2.data)
-                    head2 = head2.right
+                    res.append(cur2)
+                    cur2 = next(head2, None)
 
-            elif head1:
-                res.append(head1.data)
-                head1 = head1.right
+            elif cur1:
+                res.append(cur1)
+                cur1 = next(head1, None)
 
-            else:
-                res.append(head2.data)
-                head2 = head2.right
+            elif cur2:
+                res.append(cur2)
+                cur2 = next(head2, None)
 
         return res
