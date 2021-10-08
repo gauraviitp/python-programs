@@ -7,7 +7,7 @@ class Solution:
                 num[i] = 0
             num[n-1] = 1
             num.insert(0, 1)
-        return num
+            return num
 
         incr = False
 
