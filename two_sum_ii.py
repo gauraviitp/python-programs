@@ -9,11 +9,7 @@ class Solution:
         for i, num in enumerate(numbers):
             complement = target - num
 
-            pos_left = bisect.bisect_left(numbers, complement)
-            pos_right = bisect.bisect_right(numbers, complement)
+            pos = bisect.bisect_left(numbers, complement, i+1, n)
 
-            if pos_left != pos_right:
-                if pos_left != i:
-                    return [i+1, pos_left+1]
-                if pos_right > 0 and pos_right - 1 != i:
-                    return [i+1, pos_right]
+            if pos < n and numbers[pos] == complement:
+                return [i+1, pos+1]
