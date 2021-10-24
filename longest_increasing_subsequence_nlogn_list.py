@@ -1,4 +1,4 @@
-from sortedcontainers import SortedList
+from bisect import bisect_left
 from typing import List
 
 
@@ -7,16 +7,15 @@ class Solution:
 
         n = len(nums)
 
-        s = SortedList()
+        s = []  # a sorted list
 
         for num in nums:
-            i = s.bisect_left(num)
+            i = bisect_left(s, num)
 
             if i == len(s):
-                s.add(num)
+                s.append(num)
 
             else:
-                s.pop(i)
-                s.add(num)
+                s[i] = num
 
         return len(s)
